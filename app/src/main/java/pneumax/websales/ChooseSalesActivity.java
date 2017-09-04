@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +25,7 @@ public class ChooseSalesActivity extends AppCompatActivity {
 
     private String[] userLoginStrings;
     private String[] STFcodeStrings, STFnameStrings;
+    private String nameChoosedString, stfCodeString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,30 @@ public class ChooseSalesActivity extends AppCompatActivity {
 
             }   // for
 
+            Spinner nameSpinner = (Spinner) findViewById(R.id.spnName);
+            ArrayAdapter<String> nameArrayAdapter = new ArrayAdapter<String>(ChooseSalesActivity.this,
+                    android.R.layout.simple_list_item_1, STFnameStrings);
+            nameSpinner.setAdapter(nameArrayAdapter);
+            nameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    nameChoosedString = STFnameStrings[i];
+                    stfCodeString = STFcodeStrings[i];
+                    showMyView(STFcodeStrings[i]);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    nameChoosedString = STFnameStrings[0];
+                    stfCodeString = STFcodeStrings[0];
+                    showMyView(STFcodeStrings[0]);
+                }
+            });
+
+
+
+
+
         } catch (Exception e) {
             Log.d(tag, "e createSpinner ==>  " + e.toString());
         }
@@ -82,6 +111,15 @@ public class ChooseSalesActivity extends AppCompatActivity {
 
 
     }   // createSpinner
+
+    private void showMyView(String stFcodeString) {
+        String tag = "4SepV5";
+        Log.d(tag, "STFcode ทีให้แสดง ==> " + stFcodeString);
+
+
+
+
+    }   // showMyView
 
     private void getValueFromIntent() {
         userLoginStrings = getIntent().getStringArrayExtra("UserLogin");
